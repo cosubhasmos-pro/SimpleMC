@@ -1,10 +1,11 @@
 
 
 from simplemc.cosmo.paramDefs import h_par, Pr_par, s8_par
-from scipy.misc import derivative
+from scipy.differentiate import derivative
 import scipy.integrate as intg
 from scipy import constants
 import scipy as sp
+import numpy as np
 
 
 
@@ -142,12 +143,12 @@ class BaseCosmology:
 
 
     def Hinv_z(self, z):
-        return 1./sp.sqrt(self.RHSquared_a(1.0/(1+z)))
+        return 1./np.sqrt(self.RHSquared_a(1.0/(1+z)))
 
 
     # @autojit
     def DistIntegrand_a(self, a):
-        return 1./sp.sqrt(self.RHSquared_a(a))/a**2
+        return 1./np.sqrt(self.RHSquared_a(a))/a**2
 
 
     def distance_ratio(self, zl, zs):
@@ -172,8 +173,8 @@ class BaseCosmology:
             # comoving one.
             return sp.sinh(r*q)/(q)
         else:
-            q = sp.sqrt(-self.Curv)
-            return sp.sin(r*q)/(q)
+            q = np.sqrt(-self.Curv)
+            return np.sin(r*q)/(q)
 
     # Angular distance.
     def AD_z(self, z):
@@ -202,7 +203,7 @@ class BaseCosmology:
 
         # Note that our Da_z is comoving, so we're only
         # multilpyting with a single (1+z) factor.
-        return 5*sp.log10(self.Da_z(z)*(1+z))
+        return 5*np.log10(self.Da_z(z)*(1+z))
 
 
     # Returns the growth factor as a function of redshift.
@@ -214,7 +215,7 @@ class BaseCosmology:
         # Equation 7.77 from Doddie
         af = 1/(1.+z)
         r = intg.quad(self.GrowthIntegrand_a, 1e-7, af)
-        gr = sp.sqrt(self.RHSquared_a(af))*r[0]  # assuming precision is ok
+        gr = np.sqrt(self.RHSquared_a(af))*r[0]  # assuming precision is ok
 
         # If we have Omega_m, let's normalize that way.
         if hasattr(self, "Om"):
@@ -228,7 +229,7 @@ class BaseCosmology:
 
 
     def compuAge(self, z):
-        return 1.0/((1+z)*100.0*self.h*sp.sqrt(self.RHSquared_a(1.0/(1+z))))
+        return 1.0/((1+z)*100.0*self.h*np.sqrt(self.RHSquared_a(1.0/(1+z))))
 
 
     def Age(self):

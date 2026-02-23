@@ -2,7 +2,7 @@
 # pip3 install -r requirements.txt
 numpy
 scipy
-sklearn
+scikit-learn
 numdifftools
 matplotlib
 deap
