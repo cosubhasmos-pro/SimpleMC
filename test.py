@@ -1,7 +1,7 @@
 from simplemc.DriverMC import DriverMC
 
 "read all setting from .ini file"
-inifile = "baseConfig.ini"
+inifile = "baseConfig2.ini"
 
 import multiprocessing as mp
 

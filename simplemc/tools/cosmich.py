@@ -5,7 +5,7 @@
 #
 
 import sys
-import scipy as sp
+import numpy as sp
 from glob import glob
 import numpy.fft as fft
 import matplotlib.pyplot as plt

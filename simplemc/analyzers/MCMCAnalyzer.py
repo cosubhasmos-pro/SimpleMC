@@ -6,6 +6,7 @@
 from simplemc.cosmo.Derivedparam import AllDerived
 import scipy.linalg as la
 import scipy as sp
+import numpy as np
 import copy
 import random
 import sys
@@ -74,8 +75,8 @@ class MCMCAnalyzer:
         for lb, hb in [p.bounds for p in self.cpars]:
             minvals.append(lb)
             maxvals.append(hb)
-        self.minvals = sp.array(minvals)
-        self.maxvals = sp.array(maxvals)
+        self.minvals = np.array(minvals)
+        self.maxvals = np.array(maxvals)
         print("Bounds:", self.minvals, self.maxvals)
 
         if (like.name() == "Composite"):
@@ -87,7 +88,7 @@ class MCMCAnalyzer:
         if (cov == None):
             # make initial cov matrix from diagonal "errors"
             errs = [0.01*p.error**2 for p in self.cpars]
-            self.init_pcov(sp.diag(errs))
+            self.init_pcov(np.diag(errs))
         else:
             self.init_pcov(cov)
 
@@ -116,8 +117,8 @@ class MCMCAnalyzer:
         self.co     = 0
         # mean for burin
         self.swx    = 0
-        self.meanx  = sp.zeros(self.N)
-        self.meanxx = sp.zeros((self.N, self.N))
+        self.meanx  = np.zeros(self.N)
+        self.meanxx = np.zeros((self.N, self.N))
         # max loglike
         self.maxloglike = -1e30
         # are we done
@@ -136,14 +137,14 @@ class MCMCAnalyzer:
             self.cw += numout  ## things hitting outside the prior are formally rejected samples
             self.like.updateParams(ppars)
             ploglike, ploglikes = self.getLikes()
-            if (sp.isnan(ploglike)):
+            if (np.isnan(ploglike)):
                 print("\nSomething bad has happened, nan in loglike, assuming zero log")
                 ploglike = -1e50
             # print cloglike, ploglike, [p.value for p in like.freeParameters()], [p.value for p in self.cpars]
             if (ploglike > self.cloglike):
                 accept = True
             else:
-                accept = (sp.exp((ploglike-self.cloglike)/self.temp)
+                accept = (np.exp((ploglike-self.cloglike)/self.temp)
                           > random.uniform(0., 1.))
 
             # print [p.value for p in ppars], accept, ploglike
@@ -179,7 +180,7 @@ class MCMCAnalyzer:
                 except:
                 # Without mpi4py installed
                     self.gr = self.GRDRun(self.lpars)
-                    if (sp.all(self.gr < self.GRcondition)):
+                    if (np.all(self.gr < self.GRcondition)):
                         print('\n---- Gelman-Rubin achived ---- ')
                         self.closeFiles()
                         return True
@@ -288,7 +289,7 @@ class MCMCAnalyzer:
         Generation of proposal point in mcmc.
 
         """
-        vec = sp.zeros(self.N)
+        vec = np.zeros(self.N)
         numreject = 0
         while True:
             ppars = copy.deepcopy(self.cpars)
@@ -305,8 +306,8 @@ class MCMCAnalyzer:
 
 
     def draw_pcov(self):
-        a = sp.array([random.gauss(0., 1,) for _ in range(self.N)])
-        return sp.dot(a, self.chol)
+        a = np.array([random.gauss(0., 1,) for _ in range(self.N)])
+        return np.dot(a, self.chol)
 
 
 
@@ -324,7 +325,7 @@ class MCMCAnalyzer:
 
         if (self.co > self.skip):
             # weight rescaled
-            wers = self.cw*sp.exp((self.cloglike-self.logofs)
+            wers = self.cw*np.exp((self.cloglike-self.logofs)
                                * (self.temp-1.0)/self.temp)
 
             tmp = [wers, -self.cloglike] + vec
@@ -355,9 +356,9 @@ class MCMCAnalyzer:
 
         elif (self.co < self.skip):
             self.swx += self.cw
-            v = sp.array(vec)
+            v = np.array(vec)
             self.meanx  += v*self.cw
-            self.meanxx += sp.outer(v, v)*self.cw
+            self.meanxx += np.outer(v, v)*self.cw
             if (self.cw > 30):
                 print("\nStill burning in, weight too large")
                 self.chol *= 0.9
@@ -365,7 +366,7 @@ class MCMCAnalyzer:
         else:  # co==skip
             self.meanx  /= self.swx
             self.meanxx /= self.swx
-            self.meanxx -= sp.outer(self.meanx, self.meanx)
+            self.meanxx -= np.outer(self.meanx, self.meanx)
             print("\nRe-initializing covariance matrix after burn-in")
             print(self.meanxx)
             print()
