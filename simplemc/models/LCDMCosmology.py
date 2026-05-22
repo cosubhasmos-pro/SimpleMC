@@ -1,5 +1,6 @@
 import sys
 import scipy as sp
+import numpy as np
 from simplemc.cosmo import cosmoApprox as CA
 from simplemc.cosmo.BaseCosmology import BaseCosmology
 from simplemc.cosmo.RadiationAndNeutrinos import RadiationAndNeutrinos
@@ -157,4 +158,4 @@ class LCDMCosmology(BaseCosmology, RadiationAndNeutrinos):
         Ocbh2  = self.Ocb*self.h**2
         zstar  = 1090
         Dastar = self.Da_z(zstar)*self.c_/(self.h*100)
-        return sp.array([self.Obh2, Ocbh2, Dastar/self.rd])
+        return np.array([self.Obh2, Ocbh2, Dastar/self.rd])

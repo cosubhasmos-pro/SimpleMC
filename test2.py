@@ -1,7 +1,7 @@
 from simplemc.DriverMC import DriverMC
 
 "read all setting from .ini file"
-inifile = "quintom.ini"
+inifile = "quintom2.ini"
 
 import multiprocessing as mp
 

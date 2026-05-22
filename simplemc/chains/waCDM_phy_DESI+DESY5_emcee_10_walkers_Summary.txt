@@ -2,12 +2,12 @@ SUMMARY
 -------
 analyzer: emcee
 walkers: 10
-nsamples: 500
-maxlike: 4701.5942
-Om: 0.3179 +/- 0.0432
-Obh2: 0.0222 +/- 0.0006
-h: 0.6679 +/- 0.0550
-w: -0.7053 +/- 0.1616
-wa: -1.1092 +/- 0.9274
+nsamples: 1000
+maxlike: 3048.0684
+Om: 0.3302 +/- 0.0210
+Obh2: 0.0220 +/- 0.0005
+h: 0.6866 +/- 0.0325
+w: -0.7275 +/- 0.1192
+wa: -1.3158 +/- 0.7367
 
-Elapsed time: 11.024 minutes = 661.417 seconds 
+Elapsed time: 19.405 minutes = 1164.295 seconds 

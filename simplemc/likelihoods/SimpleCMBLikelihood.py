@@ -3,6 +3,7 @@
 from simplemc.likelihoods.BaseLikelihood import BaseLikelihood
 import scipy.linalg as la
 import scipy as sp
+import numpy as np
 
 class SimpleCMBLikelihood(BaseLikelihood):
     def __init__(self, name, mean, cov, kill_Da=False, kill_rd=False):
@@ -22,7 +23,7 @@ class SimpleCMBLikelihood(BaseLikelihood):
 
         """
         print("Initializing CMB likelihood:", name)
-        cov = sp.array(cov)
+        cov = np.array(cov)
         if kill_Da:
             cov[2, :] = 0.0
             cov[:, 2] = 0.0
@@ -34,7 +35,7 @@ class SimpleCMBLikelihood(BaseLikelihood):
             cov[1, 1] = 1e10
             name += "_noRd"
         BaseLikelihood.__init__(self, name)
-        self.mean = sp.array(mean)
+        self.mean = np.array(mean)
         self.cov  = cov
         self.icov = la.inv(cov)
 
@@ -46,7 +47,7 @@ class SimpleCMBLikelihood(BaseLikelihood):
 
     def loglike(self):
         delt = self.theory_.CMBSimpleVec() - self.mean
-        return -sp.dot(delt, sp.dot(self.icov, delt))/2.0
+        return -np.dot(delt, np.dot(self.icov, delt))/2.0
 
 
 class WMAP9(SimpleCMBLikelihood):
@@ -84,8 +85,8 @@ class PLK15(SimpleCMBLikelihood):
 #Calibrated with
 class PLK18(SimpleCMBLikelihood):
     def __init__(self, kill_Da= False, kill_rd= False):
-        mean = sp.array([2.23619584e-02,   1.425557737e-01,   9.43342292580e+01])
-        cov = sp.array([[2.2280476e-08,  -9.5339119e-08,  -1.5060900e-06],
+        mean = np.array([2.23619584e-02,   1.425557737e-01,   9.43342292580e+01])
+        cov = np.array([[2.2280476e-08,  -9.5339119e-08,  -1.5060900e-06],
                         [-9.5339119e-08,   1.6369370e-06,   1.1826342e-05],
                         [-1.5060900e-06,   1.1826342e-05,   7.9308203e-04]])
         name = "SPlanck_18"

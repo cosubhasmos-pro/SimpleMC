@@ -39,7 +39,7 @@ from .likelihoods.LikelihoodMultiplier import LikelihoodMultiplier
 # Likelihood modules
 from .likelihoods.BAOLikelihoods import DR11LOWZ, DR11CMASS, DR14LyaAuto, DR14LyaCross, \
                                         SixdFGS, SDSSMGS, DR11LyaAuto, DR11LyaCross, eBOSS, \
-                                        DR12Consensus, DR16BAO, DESIBAO
+                                        DR12Consensus, DR16BAO, DESIBAO, DESIDR2BAO
 from .likelihoods.SimpleCMBLikelihood import PLK, PLK15, PLK18, WMAP9
 from .likelihoods.CompressedSNLikelihood import BetouleSN, UnionSN
 from .likelihoods.SNLikelihood import JLASN_Full
@@ -189,7 +189,7 @@ def ParseModel(model, **kwargs):
 
 
 data_list = "BBAO, GBAO, GBAO_no6dF, CMASS, LBAO, LaBAO, LxBAO, MGS, Planck, WMAP, PlRd, WRd, PlDa, PlRdx10,"\
-    "CMBW, SN, SNx10, UnionSN, RiessH0, 6dFGS, PantheonPlus, DR16BAO, HD23, DESIBAO"
+    "CMBW, SN, SNx10, UnionSN, RiessH0, 6dFGS, PantheonPlus, DR16BAO, HD23, DESIBAO, DESIDR2BAO, DESY5exc"
 
 
 def ParseDataset(datasets, **kwargs):
@@ -279,6 +279,8 @@ def ParseDataset(datasets, **kwargs):
             L.addLikelihood(DR16BAO())
         elif name == 'DESI':
             L.addLikelihood(DESIBAO())
+        elif name == 'DESIDR2':
+            L.addLikelihood(DESIDR2BAO())
         elif name == 'PLK':
             L.addLikelihood(PLK())
         elif name == 'PLK15':
