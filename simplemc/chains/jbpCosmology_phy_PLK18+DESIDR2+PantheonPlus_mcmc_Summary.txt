@@ -1,0 +1,12 @@
+SUMMARY
+-------
+analyzer: mcmc
+maxlike: 706.3072
+gr_diagnostic: 0.09779168502037383
+Om: 0.3086 +/- 0.0066
+Obh2: 0.0224 +/- 0.0001
+h: 0.6799 +/- 0.0065
+w0: -0.8748 +/- 0.0678
+wa: -0.5990 +/- 0.4110
+
+Elapsed time: 34.263 minutes = 2055.802 seconds 
